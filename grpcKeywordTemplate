@@ -1,0 +1,34 @@
+def grpc_call_{service_name}_{endpoint}(host, data={}, metadata={}):
+    """
+     Call {service_name}/{endpoint} endpoint 
+
+     Parameters
+     ----------
+     host : str
+        the url of service eg: `localhost:8080`
+     data : str or dict
+        The data of request as JSON String or dictionary
+     metadata : dict
+        The metadata of request
+
+     Returns
+     -------
+     response
+        a GrpcResponse object with details of grpc call response
+    """
+    try:
+        with grpc.secure_channel(target=host, credentials=grpc.ssl_channel_credentials()) as channel:
+            stub = {file_name}_pb2_grpc.{service_name}Stub(channel)
+
+            request = parse_data({file_name}_pb2.{request}(), data)
+            metadata = parse_metadata(metadata)
+
+            response, grpc_call = stub.{endpoint}.with_call(request, metadata=metadata)
+        
+        return GrpcResponse(response, grpc_call)
+    except grpc.RpcError as rpc_error:
+        return GrpcResponse(error=rpc_error)
+    except Exception as e:
+        print(f'Unhandled exception happened')
+        print(str(e))
+        raise
