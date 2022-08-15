@@ -1,0 +1,5 @@
+grpcio-tools==1.48.0
+grpcio==1.48.0
+protobuf==3.20.1
+robotframework==5.0.1
+types-protobuf==3.19.22
