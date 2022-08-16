@@ -46,7 +46,7 @@ So there is a `Grpc Call` keyword for each endpoint on proto file. Wich returns 
 
 ```robotframework
 *** Settings ***
-Library  ../../Libraries/Grpc/GrpcDemoLibrary/demoGrpc.py
+Library  /Libraries/Grpc/GrpcDemoLibrary/demoGrpc.py
 
 *** Variables ***
 ${DEMO_URL}  localhost:8080
