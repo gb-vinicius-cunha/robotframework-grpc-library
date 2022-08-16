@@ -90,4 +90,11 @@ Inside a GrpcDemo folder you can find the proto used in these examples
 
 ## TODO
 
+### Stream calls
+
 Just tested with Unary calls. Stream calls need to be tested and features created if necessary
+
+### Create installable package
+
+In this first version we need download files, put on the root of project e run command. Would be
+so much better if we can install through `pip`
