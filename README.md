@@ -87,3 +87,7 @@ Como retorno você receberá um objeto **GrpcReponse** que incluí os atributos 
 You can find a few test examples in `grpc_resource.robot` file.
 
 Inside a GrpcDemo folder you can find the proto used in these examples
+
+## TODO
+
+Just tested with Unary calls. Stream calls need to be tested and features created if necessary
