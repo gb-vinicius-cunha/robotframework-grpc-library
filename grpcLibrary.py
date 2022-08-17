@@ -1,8 +1,8 @@
 import json
+import logging
 import os
 import re
 import sys
-import logging
 from pathlib import Path
 
 from google.protobuf.json_format import Parse, ParseDict
@@ -98,6 +98,7 @@ def generate_grpc_code(service_name):
             logging.info(f"Generating GRPC code of proto {entry.name}")
             os.system(
                 f"python -m grpc_tools.protoc -I{service_name}/protos \
+                                        --proto_path={_site_packages_path()} \
                                         --python_out={output_folder} \
                                         --grpc_python_out={output_folder} \
                                         {entry.name}"
@@ -121,16 +122,16 @@ def _create_keyword_file(proto_path, output_folder):
 
 def _read_proto(proto_path):
     """
-     Read a proto file and extract services and enpoints
+    Read a proto file and extract services and enpoints
 
-     Parameters
-     ----------
-     proto_path : Location of proto
+    Parameters
+    ----------
+    proto_path : Location of proto
 
-     Returns
-     -------
-     list
-        a list of services and theirs endpoints
+    Returns
+    -------
+    list
+       a list of services and theirs endpoints
     """
     services = []
 
@@ -162,16 +163,16 @@ def _read_proto(proto_path):
 
 def _write_keyword_file(services, output_folder, file_name):
     """
-     Based on list of services write a keyword file with all endpoints and services
+    Based on list of services write a keyword file with all endpoints and services
 
-     Parameters
-     ----------
-     services : list 
-        list of services definitions
-     output_folder : str
-        path of folder where the files will be stored
-     file_name : str
-        name of file to be used as name of *.py keyword file
+    Parameters
+    ----------
+    services : list
+       list of services definitions
+    output_folder : str
+       path of folder where the files will be stored
+    file_name : str
+       name of file to be used as name of *.py keyword file
     """
 
     with open("grpcKeywordTemplate") as file:
@@ -204,6 +205,12 @@ def _is_service(line):
 def _is_endpoint(line):
     """returns if line is an Endpoint line"""
     return re.match(endpoint_pattern, line)
+
+
+def _site_packages_path():
+    python_path = sys.exec_prefix
+    python_version = sys.version_info
+    return f"{python_path}/lib/python{python_version.major}.{python_version.minor}/site-packages"
 
 
 class _GrpcServiceDef:
@@ -252,18 +259,18 @@ class GrpcResponse:
     @property
     def call(self):
         """
-         GRPC native Call object
+        GRPC native Call object
 
-         Only for success calls, `null` for non-OK response
+        Only for success calls, `null` for non-OK response
         """
         return self._call
 
     @property
     def response(self):
         """
-         The object of response as defined in proto
+        The object of response as defined in proto
 
-         Only for success calls, `null` for non-OK response
+        Only for success calls, `null` for non-OK response
         """
         return self._response
 
@@ -275,9 +282,9 @@ class GrpcResponse:
     @property
     def error(self):
         """
-         GRPC native RpcError object
+        GRPC native RpcError object
 
-         Only for non-OK calls, `null` for OK response
+        Only for non-OK calls, `null` for OK response
         """
         return self._error
 
@@ -309,13 +316,13 @@ class GrpcResponse:
 
 def parse_data(request, data):
     """
-     Convert data as JSON String or Dictionary in grpc request object
+    Convert data as JSON String or Dictionary in grpc request object
 
-     Parameters
-     ----------
-     request : instance grpc request object as defined in proto
-     data : str or dict
-        The data of request as JSON String or dictionary
+    Parameters
+    ----------
+    request : instance grpc request object as defined in proto
+    data : str or dict
+       The data of request as JSON String or dictionary
     """
     if data:
         if isinstance(data, dict):
@@ -332,12 +339,12 @@ def parse_data(request, data):
 
 def parse_metadata(metadata):
     """
-     Convert metadata aDictionary in list of tuples
+    Convert metadata aDictionary in list of tuples
 
-     Parameters
-     ----------
-     metadata : dict
-        The dictionary of metadata to be send in gRPC Call
+    Parameters
+    ----------
+    metadata : dict
+       The dictionary of metadata to be send in gRPC Call
     """
     req_metadata = []
     if metadata:

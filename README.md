@@ -18,6 +18,7 @@ In this early stage it's necessary download the script and his template
 - grpcio
 - protobuf
 - types-protobuf
+- googleapis-common-protos
 
 3 - Create a folder for your service with `/protos` folder inside with respective proto files
 
