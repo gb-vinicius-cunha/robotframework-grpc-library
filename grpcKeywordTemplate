@@ -1,4 +1,4 @@
-def grpc_call_{service_name}_{endpoint}(host, data={}, metadata={}):
+def grpc_call_{service_name}_{endpoint}(host, data={}, metadata={}, secure=True):
     """
      Call {service_name}/{endpoint} endpoint 
 
@@ -10,6 +10,8 @@ def grpc_call_{service_name}_{endpoint}(host, data={}, metadata={}):
         The data of request as JSON String or dictionary
      metadata : dict
         The metadata of request
+     secure: bool
+        True to use secure channel. Default: True
 
      Returns
      -------
@@ -17,7 +19,7 @@ def grpc_call_{service_name}_{endpoint}(host, data={}, metadata={}):
         a GrpcResponse object with details of grpc call response
     """
     try:
-        with grpc.secure_channel(target=host, credentials=grpc.ssl_channel_credentials()) as channel:
+        with create_channel(host, secure) as channel:
             stub = {file_name}_pb2_grpc.{service_name}Stub(channel)
 
             request = parse_data({file_name}_pb2.{request}(), data)

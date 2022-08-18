@@ -5,6 +5,7 @@ import re
 import sys
 from pathlib import Path
 
+import grpc
 from google.protobuf.json_format import Parse, ParseDict
 
 
@@ -183,7 +184,7 @@ def _write_keyword_file(services, output_folder, file_name):
             "import grpc\n"
             f"import {file_name}_pb2\n"
             f"import {file_name}_pb2_grpc\n"
-            "from grpcLibrary import GrpcResponse, parse_data, parse_metadata\n"
+            "from grpcLibrary import GrpcResponse, parse_data, parse_metadata, create_channel\n"
         )
 
         for service in services:
@@ -356,6 +357,16 @@ def parse_metadata(metadata):
             req_metadata.append((key, value))
 
     return req_metadata
+
+
+def create_channel(host, secure):
+    return (
+        grpc.secure_channel(
+            target=host, credentials=grpc.ssl_channel_credentials()
+        )
+        if secure
+        else grpc.insecure_channel(target=host)
+    )
 
 
 if __name__ == "__main__":
