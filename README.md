@@ -76,6 +76,8 @@ Como retorno você receberá um objeto **GrpcReponse** que incluí os atributos 
 | Property      | Description                                                    | Avaiable         |
 | ------------- | -------------------------------------------------------------- | ---------------- |
 | response      | Object of response, as defined on proto file                   | OK Responses     |
+| json_str      | Json String of response, as defined on proto file              | OK Responses     |
+| json_dict     | Dict of response, as defined on proto file                     | OK Responses     |
 | status_code   | String representation of gRPC status. Eg. OK, INVALID_ARGUMENT | Always           |
 | metadata      | Trailing Metadata of response                                  | Always           |
 | error         | RpcError trew by gRPC                                          | non-OK Responses |
