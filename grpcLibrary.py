@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 import grpc
-from google.protobuf.json_format import Parse, ParseDict
+from google.protobuf.json_format import Parse, ParseDict, MessageToJson, MessageToDict
 
 
 def generate_grpc_code(service_name):
@@ -274,6 +274,24 @@ class GrpcResponse:
         Only for success calls, `null` for non-OK response
         """
         return self._response
+
+    @property
+    def json_str(self):
+        """
+        The object of response as defined in proto as json string
+
+        Only for success calls, `null` for non-OK response
+        """
+        return MessageToJson(self._response)
+
+    @property
+    def json_dict(self):
+        """
+        The object of response as defined in proto as json dictionary
+
+        Only for success calls, `null` for non-OK response
+        """
+        return MessageToDict(self._response)
 
     @property
     def status_code(self):
