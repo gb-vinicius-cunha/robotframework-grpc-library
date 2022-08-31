@@ -344,16 +344,24 @@ def parse_data(request, data):
        The data of request as JSON String or dictionary
     """
     if data:
+        if isinstance(data, str):
+            data = json.loads(data)
+
         if isinstance(data, dict):
-            return ParseDict(data, request)
-        elif isinstance(data, str):
-            return Parse(json.dumps(data), request)
+            field_mask_json = data.pop('fieldMask', None)
+            
+            request = ParseDict(data, request)
+
+            if field_mask_json:
+                request.field_mask.FromJsonString(json.dumps(field_mask_json))
+
+            return request
         else:
             raise AttributeError(
                 "Invalid Type! Data should be JSON Str or Dict type"
             )
     else:
-        return request
+        return 
 
 
 def parse_metadata(metadata):
