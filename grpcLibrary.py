@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 import grpc
-from google.protobuf.json_format import Parse, ParseDict, MessageToJson, MessageToDict
+from google.protobuf.json_format import MessageToDict, MessageToJson, ParseDict
 
 
 def generate_grpc_code(service_name):
@@ -348,12 +348,12 @@ def parse_data(request, data):
             data = json.loads(data)
 
         if isinstance(data, dict):
-            field_mask_json = data.pop('fieldMask', None)
-            
+            field_mask_json = data.pop("field_mask", None)
+
             request = ParseDict(data, request)
 
             if field_mask_json:
-                request.field_mask.FromJsonString(json.dumps(field_mask_json))
+                request.field_mask.FromJsonString(field_mask_json["paths"])
 
             return request
         else:
@@ -361,7 +361,7 @@ def parse_data(request, data):
                 "Invalid Type! Data should be JSON Str or Dict type"
             )
     else:
-        return 
+        return request
 
 
 def parse_metadata(metadata):
